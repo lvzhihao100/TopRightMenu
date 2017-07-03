@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
             menuItems.add(new MenuItem("扫一扫"));
 
             mTopRightMenu
-                    .setHeight(480)     //默认高度480
-                    .setWidth(320)      //默认宽度wrap_content
+                    .setHeight(300)     //默认高度480
+                    .setWidth(250)      //默认宽度wrap_content
                     .showIcon(false)     //显示菜单图标，默认为true
                     .dimBackground(false)        //背景变暗，默认为true
                     .needAnimationStyle(true)   //显示动画，默认为true
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "点击菜单:" + position, Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .showAsDropDown(v, 0, 0);    //带偏移量
+                    .showAsDropDown(v, 100, 100);    //带偏移量
 //      		.showAsDropDown(moreBtn)
         }
     }
