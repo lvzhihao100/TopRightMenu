@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     .needAnimationStyle(true)   //显示动画，默认为true
                     .setAnimationStyle(R.style.TRM_ANIM_STYLE)
                     .addMenuList(menuItems)
+                    .align(TopRightMenu.Align.RIGHT)
                     .setOnMenuItemClickListener(new TopRightMenu.OnMenuItemClickListener() {
                         @Override
                         public void onMenuItemClick(int position) {

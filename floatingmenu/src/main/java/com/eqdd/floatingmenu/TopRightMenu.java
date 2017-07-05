@@ -9,7 +9,9 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,7 @@ public class TopRightMenu {
 
     private float alpha = 0.75f;
     private int csw;
+    private ImageView arrow;
 
     public TopRightMenu(Activity context) {
         this.mContext = context;
@@ -49,6 +52,7 @@ public class TopRightMenu {
         csw = dm.widthPixels;
         content = LayoutInflater.from(mContext).inflate(R.layout.trm_popup_menu, null);
         mRecyclerView = (RecyclerView) content.findViewById(R.id.trm_recyclerview);
+        arrow = (ImageView) content.findViewById(R.id.iv_arrow);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
@@ -184,8 +188,8 @@ public class TopRightMenu {
             getPopupWindow();
         }
         if (!mPopupWindow.isShowing()) {
-            xoff=xoff*csw/640;
-            yoff=yoff*csw/640;
+            xoff = xoff * csw / 640;
+            yoff = yoff * csw / 640;
             mPopupWindow.showAsDropDown(anchor, xoff, yoff);
             if (dimBackground) {
                 setBackgroundAlpha(1f, alpha, 240);
@@ -214,7 +218,30 @@ public class TopRightMenu {
         }
     }
 
+    public TopRightMenu align(Align align){
+        if (align==Align.LEFT){
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)arrow.getLayoutParams();
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            arrow.setLayoutParams(layoutParams);
+        }else if (align==Align.RIGHT){
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)arrow.getLayoutParams();
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            arrow.setLayoutParams(layoutParams);
+        }else if (align==Align.CENTER){
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)arrow.getLayoutParams();
+            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            arrow.setLayoutParams(layoutParams);
+        }
+        return this;
+    }
+
     public interface OnMenuItemClickListener {
         void onMenuItemClick(int position);
+    }
+
+   public enum Align {
+        LEFT,
+        RIGHT,
+        CENTER
     }
 }
