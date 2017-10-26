@@ -2,6 +2,7 @@ package com.eqdd.floatingmenu;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,7 +41,7 @@ public class TopRightMenu {
 
     private float alpha = 0.75f;
     private int csw;
-    private ImageView arrow;
+    private TriangleView arrow;
 
     public TopRightMenu(Activity context) {
         this.mContext = context;
@@ -52,7 +53,7 @@ public class TopRightMenu {
         csw = dm.widthPixels;
         content = LayoutInflater.from(mContext).inflate(R.layout.trm_popup_menu, null);
         mRecyclerView = (RecyclerView) content.findViewById(R.id.trm_recyclerview);
-        arrow = (ImageView) content.findViewById(R.id.iv_arrow);
+        arrow = (TriangleView) content.findViewById(R.id.iv_arrow);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
@@ -218,30 +219,105 @@ public class TopRightMenu {
         }
     }
 
-    public TopRightMenu align(Align align){
-        if (align==Align.LEFT){
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)arrow.getLayoutParams();
+    public TopRightMenu align(Align align) {
+        if (align == Align.LEFT) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) arrow.getLayoutParams();
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             arrow.setLayoutParams(layoutParams);
-        }else if (align==Align.RIGHT){
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)arrow.getLayoutParams();
+        } else if (align == Align.RIGHT) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) arrow.getLayoutParams();
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             arrow.setLayoutParams(layoutParams);
-        }else if (align==Align.CENTER){
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)arrow.getLayoutParams();
+        } else if (align == Align.CENTER) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) arrow.getLayoutParams();
             layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
             arrow.setLayoutParams(layoutParams);
         }
         return this;
     }
 
+    public TopRightMenu top(Align align, int leftMargin, int rightMargin) {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) arrow.getLayoutParams();
+        if (align == Align.LEFT) {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        } else if (align == Align.RIGHT) {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        } else {
+            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        }
+        layoutParams.leftMargin = dip2px(mContext, leftMargin);
+        layoutParams.rightMargin = dip2px(mContext, rightMargin);
+        arrow.setLayoutParams(layoutParams);
+        return this;
+    }
+
+    public TopRightMenu down(Align align, int leftMargin, int rightMargin) {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) arrow.getLayoutParams();
+        if (align == Align.LEFT) {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        } else if (align == Align.RIGHT) {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        } else {
+            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        }
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        layoutParams.leftMargin = dip2px(mContext, leftMargin);
+        layoutParams.rightMargin = dip2px(mContext, rightMargin);
+        arrow.setLayoutParams(layoutParams);
+        arrow.setBottomPath();
+        return this;
+    }
+
+    public TopRightMenu left(Align align, int leftMargin, int rightMargin) {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) arrow.getLayoutParams();
+        if (align == Align.LEFT) {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        } else if (align == Align.RIGHT) {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        } else {
+            layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
+        }
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        layoutParams.bottomMargin = dip2px(mContext, leftMargin);
+        layoutParams.topMargin = dip2px(mContext, rightMargin);
+        arrow.setLayoutParams(layoutParams);
+        arrow.setLeftPath();
+        return this;
+    }
+    public TopRightMenu right(Align align, int leftMargin, int rightMargin) {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) arrow.getLayoutParams();
+        if (align == Align.LEFT) {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        } else if (align == Align.RIGHT) {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        } else {
+            layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
+        }
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        layoutParams.topMargin = dip2px(mContext, leftMargin);
+        layoutParams.bottomMargin = dip2px(mContext, rightMargin);
+        arrow.setLayoutParams(layoutParams);
+        arrow.setRightPath();
+        return this;
+    }
+
+
     public interface OnMenuItemClickListener {
         void onMenuItemClick(int position);
     }
 
-   public enum Align {
+    public enum Align {
         LEFT,
         RIGHT,
         CENTER
     }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
 }

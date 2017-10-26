@@ -13,4 +13,9 @@
         android:onClick="onClick"
         android:text="Hello World!" />
 
+    <com.eqdd.floatingmenu.TriangleView
+        android:id="@+id/tr"
+        android:layout_width="300dp"
+        android:layout_height="200dp" />
+
 </LinearLayout>

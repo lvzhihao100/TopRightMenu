@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.eqdd.floatingmenu.MenuItem;
 import com.eqdd.floatingmenu.TopRightMenu;
+import com.eqdd.floatingmenu.TriangleView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TriangleView viewById = (TriangleView) findViewById(R.id.tr);
+        viewById.setBottomPath();
 
     }
 
@@ -36,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
                     .setHeight(300)     //默认高度480
                     .setWidth(250)      //默认宽度wrap_content
                     .showIcon(false)     //显示菜单图标，默认为true
-                    .dimBackground(false)        //背景变暗，默认为true
+                    .dimBackground(true)        //背景变暗，默认为true
                     .needAnimationStyle(true)   //显示动画，默认为true
                     .setAnimationStyle(R.style.TRM_ANIM_STYLE)
                     .addMenuList(menuItems)
-                    .align(TopRightMenu.Align.RIGHT)
+                    .right(TopRightMenu.Align.LEFT, 30, 10)
                     .setOnMenuItemClickListener(new TopRightMenu.OnMenuItemClickListener() {
                         @Override
                         public void onMenuItemClick(int position) {
